@@ -1,0 +1,83 @@
+{
+    "interact": {
+        "magic": "APF_VER_1",
+        "variables": [
+            {
+				"name": "Region",
+				"id": 2,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0x2000001c",
+				"writeonly": true,
+				"defaultval": 0,
+				"mask": "0xFFFF0000",
+				"options": [
+					{
+						"value": 2,
+						"name": "USA"
+					},										
+					{
+						"value": 0,
+						"name": "Japan",
+					},
+					{
+						"value": 3,
+						"name": "Europe"
+					},
+					{
+						"value": 1,
+						"name": "PAL Extra"
+					}					
+				]
+			},
+			{
+                "name": "Auto Region",
+                "id": 3,
+                "type": "check",
+                "enabled": true,
+				"persist": true,
+				"writeonly": true,
+                "address": "0x20000020",
+				"defaultval": 1,
+                "value": 1,
+                "mask": "0xFFFFFFFE"
+            },			
+            {
+                "name": "3 Buttons",
+                "id": 6,
+                "type": "radio",
+                "group": 200,
+                "enabled": true,
+				"persist": true,
+				"writeonly": true,
+				"address": "0x20000018",
+                "value": 0,
+                "mask": "0xFFFF0000"
+            },
+            {
+                "name": "6 Buttons",
+                "id": 7,
+                "type": "radio",
+                "group": 200,
+                "enabled": true,
+				"persist": true,
+				"writeonly": true,
+                "address": "0x20000018",
+				"defaultval": 1,
+                "value": 1,
+                "mask": "0xFFFF0000"
+            },
+            {
+				"name": "Reset System",
+				"id": 8,
+				"type": "action",
+				"enabled": true,
+				"address": "0x20000028",
+				"value": 1
+			}					
+        ],
+        "messages": [
+        ]
+    }
+}

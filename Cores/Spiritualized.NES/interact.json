@@ -1,0 +1,223 @@
+{
+    "interact": {
+        "magic": "APF_VER_1",
+        "variables": [
+            {
+				"name": "Region",
+				"id": 2,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0x100388a4",
+				"writeonly": true,
+				"defaultval": 0,
+				"mask": "0xFFFF0000",
+				"options": [
+					{
+						"value": 0,
+						"name": "NTSC",
+					},
+					{
+						"value": 1,
+						"name": "PAL"
+					},
+					{
+						"value": 2,
+						"name": "Dendy"
+					}
+				]
+			},
+			{
+                "name": "Auto Region",
+                "id": 3,
+                "type": "check",
+                "enabled": true,
+				"persist": true,
+				"writeonly": true,
+                "address": "0x100388b4",
+				"defaultval": 1,
+                "value": 1,
+                "mask": "0xFFFFFFFE"
+            },			
+			{
+                "name": "Overscan",
+                "id": 4,
+                "type": "check",
+                "enabled": true,
+				"persist": true,
+				"writeonly": true,
+                "address": "0x100388b8",
+				"defaultval": 0,
+                "value": 1,
+                "mask": "0xFFFFFFFE"
+            },						
+			{
+                "name": "Looped Noise Off",
+                "id": 5,
+                "type": "check",
+                "enabled": true,
+				"persist": false,
+				"writeonly": true,
+                "address": "0x10000274",
+				"defaultval": 0,
+                "value": 1,
+                "mask": "0xFFFFFFFE"
+            },
+			{
+                "name": "Square Reset Off",
+                "id": 6,
+                "type": "check",
+                "enabled": true,
+				"persist": false,
+				"writeonly": true,
+                "address": "0x10000278",
+				"defaultval": 0,
+                "value": 1,
+                "mask": "0xFFFFFFFE"
+            },			
+			{
+                "name": "16 Sprites/line",
+                "id": 7,
+                "type": "check",
+                "enabled": true,
+				"persist": true,
+				"writeonly": true,
+                "address": "0x10038880",
+				"defaultval": 0,
+                "value": 1,
+                "mask": "0xFFFFFFFE"
+            },
+            {
+				"name": "Multicart Mode",
+				"id": 8,
+				"type": "list",
+				"enabled": true,
+				"persist": false,
+				"address": "0x10038888",
+				"writeonly": true,
+				"defaultval": 0,
+				"mask": "0xFFFF0000",
+				"options": [
+					{
+						"value": "0x0",
+						"name": "Mode 0"
+					},
+					{
+						"value": "0x1",
+						"name": "Mode 1"
+					},
+					{
+						"value": "0x2",
+						"name": "Mode 2"
+					},
+					{
+						"value": "0x3",
+						"name": "Mode 3"
+					},
+					{
+						"value": "0x4",
+						"name": "Mode 4"
+					},
+					{
+						"value": "0x5",
+						"name": "Mode 5"
+					},
+					{
+						"value": "0x6",
+						"name": "Mode 6"
+					},
+					{
+						"value": "0x7",
+						"name": "Mode 7"
+					},
+					{
+						"value": "0x8",
+						"name": "Mode 8"
+					},
+					{
+						"value": "0x9",
+						"name": "Mode 9"
+					},
+					{
+						"value": "0xa",
+						"name": "Mode 10"
+					},
+					{
+						"value": "0xb",
+						"name": "Mode 11"
+					},
+					{
+						"value": "0xc",
+						"name": "Mode 12"
+					},
+					{
+						"value": "0xd",
+						"name": "Mode 13"
+					},
+					{
+						"value": "0xe",
+						"name": "Mode 14"
+					},
+					{
+						"value": "0xf",
+						"name": "Mode 15"
+					}
+				]
+			},
+            {
+				"name": "4 Player Mode",
+				"id": 9,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0x100388b0",
+				"writeonly": true,
+				"defaultval": 0,
+				"mask": "0xFFFF0000",
+				"options": [
+					{
+						"value": "0x0",
+						"name": "Off"
+					},
+					{
+						"value": "0x1",
+						"name": "4 Score"
+					},
+					{
+						"value": "0x2",
+						"name": "Fami 4 Player"
+					}
+				]
+			},
+            {
+				"name": "FDS Mode",
+				"id": 10,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0x100389e0",
+				"writeonly": true,
+				"defaultval": 0,
+				"mask": "0xFFFF0000",
+				"options": [
+					{
+						"value": "0x0",
+						"name": "Automatic"
+					},
+					{
+						"value": "0x1",
+						"name": "Manual"
+					}
+				]
+			},
+            {
+				"name": "Reset System",
+				"id": 11,
+				"type": "action",
+				"enabled": true,
+				"address": "0x100388bc",
+				"value": 1
+			  }		
+        ]
+    }
+}

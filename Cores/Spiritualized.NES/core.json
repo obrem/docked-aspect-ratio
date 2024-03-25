@@ -1,0 +1,37 @@
+{
+    "core": {
+        "magic": "APF_VER_1",
+        "metadata": {
+            "platform_ids": [
+                "nes"
+            ],
+            "shortname": "NES",
+            "description": "NES core",
+            "author": "Spiritualized",
+			"url": "",
+            "version": "1.0.2",
+            "date_release": "2022-10-18"
+        },
+        "framework": {
+            "target_product": "Analogue Pocket",
+            "version_required": "1.1",
+			"chip32_vm": "nes_chip32.bin",
+            "sleep_supported": false,
+            "dock": {
+                "supported": true,
+                "analog_output": false
+            },
+            "hardware": {
+                "link_port": false,
+                "cartridge_adapter": -1
+            }
+        },
+        "cores": [
+            {
+                "name": "default",
+                "id": 0,
+                "filename": "nes.rev"
+            }
+        ]
+    }
+}

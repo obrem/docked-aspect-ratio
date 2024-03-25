@@ -1,0 +1,105 @@
+{
+  "interact": {
+    "magic": "APF_VER_1",
+    "variables": [
+      {
+        "name": "Reset core",
+        "id": 0,
+        "type": "action",
+        "enabled": true,
+        "address": "0x0",
+        "value": 1
+      },
+      {
+        "name": "Disable Sound",
+        "id": 16,
+        "type": "check",
+        "enabled": true,
+        "address": "0x10",
+        "persist": true,
+        "writeonly": true,
+        "defaultval": 0,
+        "value": 1
+      },
+      {
+        "name": "System Speed",
+        "id": 40,
+        "type": "list",
+        "enabled": true,
+        "persist": false,
+        "writeonly": false,
+        "address": "0x100",
+        "defaultval": 0,
+        "options": [
+          {
+            "value": 0,
+            "name": "1x"
+          },
+          {
+            "value": 1,
+            "name": "2x"
+          },
+          {
+            "value": 2,
+            "name": "4x"
+          },
+          {
+            "value": 3,
+            "name": "50x"
+          },
+          {
+            "value": 4,
+            "name": "Max"
+          }
+        ]
+      },
+      {
+        "name": "End Turbo on Evt",
+        "id": 41,
+        "type": "check",
+        "enabled": true,
+        "address": "0x104",
+        "persist": true,
+        "writeonly": true,
+        "defaultval": 1,
+        "value": 1
+      },
+      {
+        "name": "Skip Evt at Turbo Start",
+        "id": 42,
+        "type": "check",
+        "enabled": true,
+        "address": "0x108",
+        "persist": true,
+        "writeonly": true,
+        "defaultval": 1,
+        "value": 1
+      },
+      {
+        "name": "LCD Type",
+        "id": 60,
+        "type": "list",
+        "enabled": true,
+        "persist": true,
+        "writeonly": true,
+        "address": "0x200",
+        "defaultval": 2,
+        "options": [
+          {
+            "value": 0,
+            "name": "Solid Pixels"
+          },
+          {
+            "value": 1,
+            "name": "Sep Pixels, No BG"
+          },
+          {
+            "value": 2,
+            "name": "Sep Pixels, BG"
+          }
+        ]
+      }
+    ],
+    "messages": []
+  }
+}

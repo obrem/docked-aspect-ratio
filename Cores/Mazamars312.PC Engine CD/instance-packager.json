@@ -1,0 +1,23 @@
+{
+   "output":"Assets/pcecd/Mazamars312.PC Engine CD",
+   "platform_id": "pcecd",
+   "slot_limit": { 
+      "count": 28,
+      "message": "Games with over 27 bin files are currently not supported. Use a merged bin file for this game."
+   },
+   "data_slots":[
+      {
+         "id":100,
+         "filename":"*.cue",
+         "sort":"single",
+         "required":true,
+         "as_filename":true
+      },
+      {
+         "id":101,
+         "filename":"*.bin",
+         "sort":"ascending",
+         "required":true
+      }
+   ]
+}

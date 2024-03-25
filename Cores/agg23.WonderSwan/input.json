@@ -1,0 +1,52 @@
+{
+  "input": {
+    "magic": "APF_VER_1",
+    "controllers": [
+      {
+        "type": "default",
+        "mappings": [
+          {
+            "id": 0,
+            "name": "Horz A/Vert Y2",
+            "key": "pad_btn_a"
+          },
+          {
+            "id": 1,
+            "name": "Horz B/Vert Y3",
+            "key": "pad_btn_b"
+          },
+          {
+            "id": 2,
+            "name": "Horz Y3/Vert Y1",
+            "key": "pad_btn_x"
+          },
+          {
+            "id": 3,
+            "name": "Horz Y4/Vert Y4",
+            "key": "pad_btn_y"
+          },
+          {
+            "id": 10,
+            "name": "Horz Y1/Vert A",
+            "key": "pad_trig_l"
+          },
+          {
+            "id": 11,
+            "name": "Horz Y2/Vert B",
+            "key": "pad_trig_r"
+          },
+          {
+            "id": 20,
+            "name": "Start",
+            "key": "pad_btn_start"
+          },
+          {
+            "id": 30,
+            "name": "Fast Forward",
+            "key": "pad_btn_select"
+          }
+        ]
+      }
+    ]
+  }
+}

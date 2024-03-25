@@ -1,0 +1,37 @@
+{
+    "data": {
+        "magic": "APF_VER_1",
+        "data_slots": [
+            {
+                "name": "Game",
+                "id": 0,
+                "required": true,
+                "parameters": "0x113",
+                "extension" : [
+                    "json"
+                ]
+            },
+            {
+                "name": "ROM",
+                "id": 1,
+                "required": true,
+                "parameters": 0,
+                "extensions": [
+                    "rom"
+                ],
+                "address": "0x00000000"
+            },
+            {
+                "name": "NVRAM",
+                "id": 2,
+                "required": false,
+                "parameters": "0x04",
+                "nonvolatile": true,
+                "extensions": ["nvm"],
+                "exact_size" : 80,
+                "deferload" : true,
+                "address": "0x10001620"
+            }
+        ]
+    }
+}

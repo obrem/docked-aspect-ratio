@@ -1,0 +1,84 @@
+{
+    "interact": {
+        "magic": "APF_VER_1",
+        "variables": [
+			{
+                "name": "High Quality Audio",
+                "id": 1,
+                "type": "check",
+                "enabled": true,
+				"persist": true,
+				"defaultval" : 1,
+                "address": "0x20000000",
+                "value": 1,
+                "mask": "0xFFFFFFFE"
+            },
+			{
+                "name": "Rumble Strength",
+                "id": 2,
+                "type": "slider_u32",
+                "enabled": true,
+				"persist": true,
+				"defaultval" : 5,
+				"writepersist": true,
+                "address": "0x20000004",
+                "mask": "0xFFFFFFF8",
+                "graphical": {
+                    "default": "4",
+                    "signed": false,
+                    "min": 0,
+                    "max": 7,
+                    "adjust_small": 1,
+                    "adjust_large": 1
+                }
+            },
+			{
+                "name": "Disable Layer 0",
+                "id": 3,
+                "type": "check",
+                "enabled": true,
+                "address": "0x20000008",
+                "value": 1,
+                "mask": "0xFFFFFFFE"
+            },
+			{
+                "name": "Disable Layer 1",
+                "id": 4,
+                "type": "check",
+                "enabled": true,
+                "address": "0x2000000C",
+                "value": 1,
+                "mask": "0xFFFFFFFE"
+            },
+			{
+                "name": "Disable Layer 2",
+                "id": 5,
+                "type": "check",
+                "enabled": true,
+                "address": "0x20000010",
+                "value": 1,
+                "mask": "0xFFFFFFFE"
+            },
+			{
+                "name": "Disable Layer 3",
+                "id": 6,
+                "type": "check",
+                "enabled": true,
+                "address": "0x20000014",
+                "value": 1,
+                "mask": "0xFFFFFFFE"
+            },
+			{
+                "name": "Disable Sprites",
+                "id": 7,
+                "type": "check",
+                "enabled": true,
+                "address": "0x20000018",
+                "value": 1,
+                "mask": "0xFFFFFFFE"
+            }
+        ],
+        "messages": [
+        ]
+    }
+}

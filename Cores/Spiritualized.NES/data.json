@@ -1,0 +1,139 @@
+{
+  "data": {
+    "magic": "APF_VER_1",
+    "data_slots": [
+      {
+        "name": "Cartridge",
+        "id": "0x100",
+        "required": true,
+        "parameters": 129,
+        "extensions": [
+          "nes",
+          "nsf",
+          "fds"
+        ],
+        "size_exact": 0,
+        "size_maximum": 100663296,
+        "address": "0x00000000"
+      },
+      {
+        "name": "Save RAM",
+        "id": "0x101",
+        "required": false,
+        "parameters": 36,
+        "nonvolatile": true,
+        "extensions": [
+          "sav"
+        ],
+        "size_exact": null,
+        "size_maximum": 65536,
+        "address": "0x00e00000"
+      },
+      {
+        "name": "Palette RAM",
+        "id": "0x120",
+        "required": false,
+		"filename": "palram.bin",
+        "parameters": 2,
+        "nonvolatile": true,
+        "extensions": [
+          "bin"
+        ],
+        "size_exact": 2048,
+        "address": "0x40000000"
+      },
+      {
+        "name": "Palette",
+        "id": "0x103",
+        "required": false,
+        "filename": "palettes/ntsc.pal",
+        "parameters": "0x1",
+        "extensions": [
+          "pal"
+        ],
+        "size_exact": null,
+        "size_maximum": 65536,
+        "address": "0x00000000"
+      },
+      {
+        "name": "BIOS",
+        "id": "0x104",
+        "required": false,
+        "filename": "fds.bios",
+        "parameters": "0x1",
+        "extensions": [
+          "bios",
+          "bin"
+        ],
+        "size_exact": 8192,
+        "address": "0x200ae000"
+      },
+      {
+        "name": "VS Pal",
+        "id": "0x105",
+        "required": false,
+        "filename": "C2C03.PAL",
+        "parameters": "0x2",
+        "extensions": [
+          "pal"
+        ],
+        "size_exact": 192
+      },
+      {
+        "name": "VS Pal",
+        "id": "0x106",
+        "required": false,
+        "filename": "C2C03B.PAL",
+        "parameters": "0x2",
+        "extensions": [
+          "pal"
+        ],
+        "size_exact": 192
+      },
+      {
+        "name": "VS Pal",
+        "id": "0x107",
+        "required": false,
+        "filename": "P2C04_1.PAL",
+        "parameters": "0x2",
+        "extensions": [
+          "pal"
+        ],
+        "size_exact": 192
+      },
+      {
+        "name": "VS Pal",
+        "id": "0x108",
+        "required": false,
+        "filename": "P2C04_2.PAL",
+        "parameters": "0x2",
+        "extensions": [
+          "pal"
+        ],
+        "size_exact": 192
+      },
+      {
+        "name": "VS Pal",
+        "id": "0x109",
+        "required": false,
+        "filename": "P2C04_3.PAL",
+        "parameters": "0x2",
+        "extensions": [
+          "pal"
+        ],
+        "size_exact": 192
+      },
+      {
+        "name": "VS Pal",
+        "id": "0x10A",
+        "required": false,
+        "filename": "P2C04_4.PAL",
+        "parameters": "0x2",
+        "extensions": [
+          "pal"
+        ],
+        "size_exact": 192
+      }
+    ]
+  }
+}

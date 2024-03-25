@@ -1,0 +1,20 @@
+{
+    "interact": {
+        "magic": "APF_VER_1",
+        "variables": [
+            {
+                "name": "Is Export",
+                "id": 1,
+                "type": "check",
+                "enabled": true,
+				"persist": true,
+				"defaultval" : 1,
+                "address": "0x20000004",
+                "value": 1,
+                "mask": "0xFFFFFFFE"
+            }
+        ],
+        "messages": [
+        ]
+    }
+}

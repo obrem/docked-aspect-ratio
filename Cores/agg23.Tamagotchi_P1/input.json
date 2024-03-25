@@ -1,0 +1,37 @@
+{
+  "input": {
+    "magic": "APF_VER_1",
+    "controllers": [
+      {
+        "type": "default",
+        "mappings": [
+          {
+            "id": 0,
+            "name": "Select",
+            "key": "pad_btn_y"
+          },
+          {
+            "id": 1,
+            "name": "Execute",
+            "key": "pad_btn_b"
+          },
+          {
+            "id": 2,
+            "name": "Cancel",
+            "key": "pad_btn_a"
+          },
+          {
+            "id": 10,
+            "name": "Decrease Turbo",
+            "key": "pad_trig_l"
+          },
+          {
+            "id": 11,
+            "name": "Increase Turbo",
+            "key": "pad_trig_r"
+          }
+        ]
+      }
+    ]
+  }
+}

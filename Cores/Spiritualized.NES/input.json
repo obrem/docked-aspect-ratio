@@ -1,0 +1,42 @@
+{
+    "input": {
+        "magic": "APF_VER_1",
+        "controllers": [
+            {
+                "type": "default",
+                "mappings": [
+                    {
+                        "id": 0,
+                        "name": "A Button",
+                        "key": "pad_btn_a"
+                    },
+                    {
+                        "id": 1,
+                        "name": "B Button",
+                        "key": "pad_btn_b"
+                    },
+					{
+                        "id": 2,
+                        "name": "Insert Coin",
+                        "key": "pad_trig_l"
+                    },
+					{
+                        "id": 3,
+                        "name": "Insert Disk",
+                        "key": "pad_trig_r"
+                    },					
+                    {
+                        "id": 6,
+                        "name": "Start Button",
+                        "key": "pad_btn_start"
+                    },					
+                    {
+                        "id": 7,
+                        "name": "Select Button",
+                        "key": "pad_btn_select"
+                    }					
+                ]
+            }
+        ]
+    }
+}
