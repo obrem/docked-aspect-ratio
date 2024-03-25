@@ -18,6 +18,7 @@ public class RatioHandler
         {
             ReadCommentHandling = JsonCommentHandling.Skip,
             AllowTrailingCommas = true,
+            WriteIndented = true
         };
     }
     public void DoWork()
