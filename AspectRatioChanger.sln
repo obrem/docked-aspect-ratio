@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.34707.107
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspectRatioChanger", "AspectRatioChanger\AspectRatioChanger.csproj", "{86D1706B-1C60-466D-8292-36679807AD94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspectRatioChanger.Test", "AspectRatioChanger.Test\AspectRatioChanger.Test.csproj", "{685A6182-A15F-4CA7-A9FE-1005C61201DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{86D1706B-1C60-466D-8292-36679807AD94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86D1706B-1C60-466D-8292-36679807AD94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86D1706B-1C60-466D-8292-36679807AD94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{685A6182-A15F-4CA7-A9FE-1005C61201DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{685A6182-A15F-4CA7-A9FE-1005C61201DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{685A6182-A15F-4CA7-A9FE-1005C61201DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{685A6182-A15F-4CA7-A9FE-1005C61201DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

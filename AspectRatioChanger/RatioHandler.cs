@@ -1,144 +1,57 @@
 ﻿using AspectRatioChanger.Pocos;
-using Spectre.Console;
-using System.Text.Json;
 
 namespace AspectRatioChanger;
 
 public class RatioHandler
 {
-    readonly List<CoreDescription> cores = new();
-
-    readonly string rootPath;
-    private JsonSerializerOptions _jsonSerializerOptions;
-
-    public RatioHandler(string drive)
+    private static double maxAspectRatioWidth = 16.0/9.0;
+    public List<VideoRoot> AddDockedModes(List<VideoRoot> scaler_modes, double increaseRate, bool reset=false)
     {
-        rootPath = drive + @":\Cores";
-        _jsonSerializerOptions = new JsonSerializerOptions
+        foreach (var mode in scaler_modes)
         {
-            ReadCommentHandling = JsonCommentHandling.Skip,
-            AllowTrailingCommas = true,
-            WriteIndented = true
-        };
-    }
-    public void DoWork()
-    {
-        FindVideoJsonFiles(rootPath);
-        Print(cores);
-    }
-
-    private void FindVideoJsonFiles(string folderPath)
-    {
-        try
-        {
-            foreach (var file in Directory.GetFiles(folderPath, "video.json"))
+            if (reset)
             {
+                mode.dock_aspect_w = null;
+                mode.dock_aspect_h = null;
+                continue;
+            }
+            var isVerticalMode = mode.rotation == 90 || mode.rotation == 270;
+            if (isVerticalMode)
+            {
+                mode.dock_aspect_h = (int)(mode.aspect_h * 100 * increaseRate);
+                mode.dock_aspect_w = mode.aspect_w * 100;
+            }
+            else
+            {
+                var isWidescreenAlready = CheckCurrentAspectRatio(mode.aspect_w, mode.aspect_h);
+                if (isWidescreenAlready) continue;
 
-                string jsonContent = File.ReadAllText(file);
-                var videoSettings = JsonSerializer.Deserialize<Root>(jsonContent, _jsonSerializerOptions);
+                mode.dock_aspect_w = (int)(mode.aspect_w * 100 * increaseRate);
+                mode.dock_aspect_h = mode.aspect_h * 100;
 
-                foreach (var mode in videoSettings.video.scaler_modes)
+                var isOverStretched = maxAspectRatioWidth < (double)mode.dock_aspect_w / (double)mode.dock_aspect_h;
+                if (isOverStretched)
                 {
-                    var core = new CoreDescription
-                    {
-                        CoreName = Path.GetDirectoryName(file).Split("\\").Last(),
-                        Flipped = mode.rotation == 90 || mode.rotation == 270,
-                        CurrentAspectRatio = mode.aspect_w + ":" + mode.aspect_h,
-                        DockedAspectRatio = mode.dock_aspect_w + ":" + mode.dock_aspect_h
-                    };
-
-                    cores.Add(core);
+                    mode.dock_aspect_w = 16;
+                    mode.dock_aspect_h = 9;
                 }
-            }
 
-            foreach (string directory in Directory.GetDirectories(folderPath))
-            {
-                FindVideoJsonFiles(directory); // Recursive call to search subdirectories
             }
         }
-        catch (UnauthorizedAccessException e)
-        {
-            Console.WriteLine(e.Message);
-        }
-        catch (DirectoryNotFoundException e)
-        {
-            Console.WriteLine(e.Message);
-        }
+
+        return scaler_modes;
     }
 
-    private void Print(List<CoreDescription> cores)
+    private bool CheckCurrentAspectRatio(int aspect_w, int aspect_h)
     {
-        // Create a table
-        var table = new Table();
+        double width = aspect_w;
+        double height = aspect_h;
 
-        // Add some columns
-        table.AddColumn("Name");
-        table.AddColumn("Flipped");
-        table.AddColumn("AspectRatio");
-        table.AddColumn("Docked AR");
+        double currentAspect = width / height;
 
-        // Add some rows
-        foreach (var core in cores)
-        {
-            table.AddRow(core.CoreName, core.Flipped == false ? string.Empty : "Yes", core.CurrentAspectRatio,
-               core.DockedAspectRatio);
-        }
-        // Render the table to the console
-        AnsiConsole.Write(table);
-    }
+        if (currentAspect >= maxAspectRatioWidth)
+            return true;
 
-    public void AddDockedModes()
-    {
-        WriteToFile(rootPath, false);
-    }
-
-    private void WriteToFile(string folderPath, bool reset)
-    {
-
-        var increasRate = 1.09;
-        try
-        {
-            foreach (var file in Directory.GetFiles(folderPath, "video.json"))
-            {
-
-                string jsonContent = File.ReadAllText(file);
-                var videoSettings = JsonSerializer.Deserialize<Root>(jsonContent, _jsonSerializerOptions);
-
-                foreach (var mode in videoSettings.video.scaler_modes)
-                {
-                    if (reset)
-                    {
-                        mode.dock_aspect_w = null;
-                        mode.dock_aspect_h = null;
-                        continue;
-                    }
-                    if (mode.rotation == 90 || mode.rotation == 270)
-                    {
-                        mode.dock_aspect_h = (int)(mode.aspect_h * 100 * increasRate);
-                        mode.dock_aspect_w = mode.aspect_w * 100;
-                    }
-                    else
-                    {
-                        mode.dock_aspect_w = (int)(mode.aspect_w * 100 * increasRate);
-                        mode.dock_aspect_h = mode.aspect_h * 100;
-                    }
-                }
-                var stringJson = JsonSerializer.Serialize<Root>(videoSettings, _jsonSerializerOptions);
-                File.WriteAllText(file, stringJson);
-            }
-
-            foreach (string directory in Directory.GetDirectories(folderPath))
-            {
-                WriteToFile(directory, reset); // Recursive call to search subdirectories
-            }
-        }
-        catch (UnauthorizedAccessException e)
-        {
-            Console.WriteLine(e.Message);
-        }
-        catch (DirectoryNotFoundException e)
-        {
-            Console.WriteLine(e.Message);
-        }
+        return false;
     }
 }

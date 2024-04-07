@@ -1,4 +1,6 @@
-﻿namespace AspectRatioChanger.Pocos;
+﻿using System.Text.Json.Serialization;
+
+namespace AspectRatioChanger.Pocos;
 
 public class Root
 {
@@ -18,7 +20,9 @@ public class VideoRoot
     public int height { get; set; }
     public int aspect_w { get; set; }
     public int aspect_h { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? dock_aspect_w { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? dock_aspect_h { get; set; }
     public int rotation { get; set; }
     public int mirror { get; set; }

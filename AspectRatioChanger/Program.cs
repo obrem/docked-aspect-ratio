@@ -1,34 +1,50 @@
 ﻿using AspectRatioChanger;
 using Spectre.Console;
 
-AnsiConsole.WriteLine("Change docked mode aspect ratios");
+var title = @"
+    ___           _            _     _      __   __ _            _       _     
+   /   \___   ___| | _____  __| |   /_\    /__\ / _\ |_ _ __ ___| |_ ___| |__  
+  / /\ / _ \ / __| |/ / _ \/ _` |  //_\\  / \// \ \| __| '__/ _ \ __/ __| '_ \ 
+ / /_// (_) | (__|   <  __/ (_| | /  _  \/ _  \ _\ \ |_| | |  __/ || (__| | | |
+/___,' \___/ \___|_|\_\___|\__,_| \_/ \_/\/ \_/ \__/\__|_|  \___|\__\___|_| |_|
+                                                                               
+";
 
-var fruit = AnsiConsole.Prompt(
+AnsiConsole.WriteLine(title);
+
+Console.WriteLine("What drive do you want to look in?");
+var drive = Console.ReadKey().Key;
+
+var arc = new IOHandler(drive.ToString());
+
+
+var action = AnsiConsole.Prompt(
     new SelectionPrompt<string>()
         .Title("What do you want to do?")
         .PageSize(3)
         .MoreChoicesText("[grey](Move up and down)[/]")
         .AddChoices(new[] {
-            "List cores", "Reset docked modes", "Change docked modes",
+            "List cores", "Change docked modes", "Reset docked modes", "Quit",
         }));
 
-// Echo the fruit back to the terminal
-AnsiConsole.WriteLine($"I agree. {fruit} is tasty!");
+AnsiConsole.WriteLine($"Ok, lets {action}");
 
-Console.WriteLine("What drive do you want to look in?");
-var drive = Console.ReadKey().Key;
 
-var arc = new RatioHandler(drive.ToString());
-
-arc.DoWork();
-
-Console.WriteLine("Would you like to change Aspect Ratio for Docked mode?");
-var yesNo =Console.ReadKey().Key;
-
-if (yesNo == ConsoleKey.Y)
+switch (action)
 {
-    arc.AddDockedModes();
-    Console.WriteLine("Changed aspect ratios");
+    case "List cores":
+        arc.ListCores();
+        break;
+    case "Change docked modes":
+        arc.AddDockedModes();
+        break;
+    case "Reset docked modes":
+        arc.ResetDockedModes();
+        break;
+    case "Quit":
+        break;
+    default:
+        break;
 }
 
 Console.ReadLine();
