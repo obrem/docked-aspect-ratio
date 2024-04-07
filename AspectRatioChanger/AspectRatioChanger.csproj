@@ -11,7 +11,12 @@
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 		<PublishTrimmed>true</PublishTrimmed>
 		<JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
+		<ApplicationIcon>icon.ico</ApplicationIcon>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <Content Include="icon.ico" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Spectre.Console" Version="0.48.0" />
