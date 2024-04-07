@@ -16,6 +16,7 @@ public class IOHandler
         rootPath = drive + @":\Cores";
         _jsonSerializerOptions = new JsonSerializerOptions
         {
+            TypeInfoResolver = SourceGenerationContext.Default,
             ReadCommentHandling = JsonCommentHandling.Skip,
             AllowTrailingCommas = true,
             WriteIndented = true
@@ -35,7 +36,7 @@ public class IOHandler
             {
 
                 string jsonContent = File.ReadAllText(file);
-                var videoSettings = JsonSerializer.Deserialize<Root>(jsonContent, _jsonSerializerOptions);
+                var videoSettings = JsonSerializer.Deserialize(jsonContent, typeof(Root), _jsonSerializerOptions) as Root;
 
                 foreach (var mode in videoSettings.video.scaler_modes)
                 {
@@ -107,13 +108,13 @@ public class IOHandler
             {
 
                 string jsonContent = File.ReadAllText(file);
-                var videoSettings = JsonSerializer.Deserialize<Root>(jsonContent, _jsonSerializerOptions);
+                var videoSettings = JsonSerializer.Deserialize(jsonContent, typeof(Root), _jsonSerializerOptions) as Root;
 
                 var ratioHandler = new RatioHandler();
                 var modifiedScalerModes = ratioHandler.AddDockedModes(videoSettings.video.scaler_modes, increaseRate, reset);
                 videoSettings.video.scaler_modes = modifiedScalerModes;
                 
-                var stringJson = JsonSerializer.Serialize<Root>(videoSettings, _jsonSerializerOptions);
+                var stringJson = JsonSerializer.Serialize(videoSettings, typeof(Root), _jsonSerializerOptions);
                 File.WriteAllText(file, stringJson);
             }
 

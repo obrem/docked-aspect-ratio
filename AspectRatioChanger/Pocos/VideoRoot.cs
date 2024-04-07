@@ -1,7 +1,14 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AspectRatioChanger.Pocos;
 
+
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(Root))]
+internal partial class SourceGenerationContext : JsonSerializerContext
+{
+}
 public class Root
 {
     public Video video { get; set; }
