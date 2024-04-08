@@ -2,7 +2,7 @@
 
 internal class CoreDescription
 {
-    public string? CoreName { get; set; }
+    public string CoreName { get; set; }
 
     public string CurrentAspectRatio { get; set; }
 

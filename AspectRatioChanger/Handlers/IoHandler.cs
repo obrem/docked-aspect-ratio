@@ -2,7 +2,7 @@
 using AspectRatioChanger.Pocos;
 using Spectre.Console;
 
-namespace AspectRatioChanger;
+namespace AspectRatioChanger.Handlers;
 
 public class IoHandler(string drive)
 {
@@ -58,18 +58,19 @@ public class IoHandler(string drive)
                 var jsonContent = File.ReadAllText(file);
                 var videoSettings = JsonSerializer.Deserialize(jsonContent, typeof(Root), _jsonSerializerOptions) as Root;
 
-                foreach (var mode in videoSettings.video.scaler_modes)
-                {
-                    var core = new CoreDescription
+                if (videoSettings != null)
+                    foreach (var mode in videoSettings.video.scaler_modes)
                     {
-                        CoreName = Path.GetDirectoryName(file).Split("\\").Last(),
-                        Flipped = mode.rotation == 90 || mode.rotation == 270,
-                        CurrentAspectRatio = mode.aspect_w + ":" + mode.aspect_h,
-                        DockedAspectRatio = mode.dock_aspect_w + ":" + mode.dock_aspect_h
-                    };
+                        var core = new CoreDescription
+                        {
+                            CoreName = Path.GetDirectoryName(file).Split("\\").Last(),
+                            Flipped = mode.rotation == 90 || mode.rotation == 270,
+                            CurrentAspectRatio = mode.aspect_w + ":" + mode.aspect_h,
+                            DockedAspectRatio = mode.dock_aspect_w + ":" + mode.dock_aspect_h
+                        };
 
-                    _cores.Add(core);
-                }
+                        _cores.Add(core);
+                    }
             }
 
             foreach (var directory in Directory.GetDirectories(folderPath))
@@ -101,7 +102,7 @@ public class IoHandler(string drive)
         // Add some rows
         foreach (var core in cores)
         {
-            table.AddRow(core.CoreName, core.Flipped == false ? string.Empty : "Yes", core.CurrentAspectRatio, core.DockedAspectRatio);
+            table.AddRow(core.CoreName, core.Flipped ? "Yes" : string.Empty, core.CurrentAspectRatio, core.DockedAspectRatio ?? string.Empty);
         }
 
         // Render the table to the console
@@ -113,7 +114,7 @@ public class IoHandler(string drive)
         if (increasePercentage <= 0)
             throw new ArgumentOutOfRangeException();
 
-        var increaseRate = 1 + ((double)increasePercentage / 10);
+        var increaseRate = 1 + (double)increasePercentage / 10;
         try
         {
             foreach (var file in Directory.GetFiles(folderPath, "video.json"))

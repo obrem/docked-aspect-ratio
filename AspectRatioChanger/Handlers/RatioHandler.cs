@@ -1,6 +1,6 @@
 ﻿using AspectRatioChanger.Pocos;
 
-namespace AspectRatioChanger;
+namespace AspectRatioChanger.Handlers;
 
 public class RatioHandler
 {
@@ -26,8 +26,8 @@ public class RatioHandler
             else
             {
                 // Add check if very large numbers divided by 10, then trim trailing zeros
-                var isWidescreenAlready = CheckCurrentAspectRatio(mode.aspect_w, mode.aspect_h);
-                if (isWidescreenAlready) continue;
+                var isWidescreen = CheckCurrentAspectRatio(mode.aspect_w, mode.aspect_h);
+                if (isWidescreen) continue;
 
                 mode.dock_aspect_w = (int)(mode.aspect_w * 10 * increaseRate);
                 mode.dock_aspect_h = mode.aspect_h * 10;
@@ -44,10 +44,10 @@ public class RatioHandler
         return scalerModes;
     }
 
-    private bool CheckCurrentAspectRatio(int aspect_w, int aspect_h)
+    private bool CheckCurrentAspectRatio(int aspectW, int aspectH)
     {
-        double width = aspect_w;
-        double height = aspect_h;
+        double width = aspectW;
+        double height = aspectH;
 
         var currentAspect = width / height;
 
