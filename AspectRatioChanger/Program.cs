@@ -10,7 +10,7 @@ var hasFolderPath = false;
 string driveLocation;
 do
 {
-    driveLocation = FindRootFolder();
+    driveLocation = IoHandler.FindRootFolder();
     if (AnsiConsole.Confirm($"Is this the path you want to use? '{driveLocation}'"))
     {
         hasFolderPath = true;
@@ -53,39 +53,3 @@ do
     }
 } while (run);
 
-string FindRootFolder()
-{
-    // Look current folder to see if it to use that one
-    var currentDir = Directory.GetCurrentDirectory();
-    var folders = Directory.EnumerateDirectories(currentDir);
-    var hasCoresFolder = folders.SingleOrDefault(f => f == currentDir + "/Cores");
-    if (hasCoresFolder != null)
-    {
-        return currentDir;
-    }
-
-
-    // Search all mounted drives
-    var drives = DriveInfo.GetDrives();
-    foreach (var driveInfo in drives)
-    {
-        // Warning only selects the first one
-        folders = Directory.EnumerateDirectories(driveInfo.Name);
-        hasCoresFolder = folders.SingleOrDefault(f => f == driveInfo.Name + "Cores");
-        if (hasCoresFolder != null)
-        {
-            return driveInfo.Name+"Cores";
-        }
-    }
-
-    // Else ask for drive path
-    AnsiConsole.WriteLine("Could not find AnaloguePocket Cores folder");
-    var drive = AnsiConsole.Ask<string>("Type the path where your AnaloguePocket SD card is?");
-    folders = Directory.EnumerateDirectories(drive);
-    hasCoresFolder = folders.SingleOrDefault(f => f == "Cores");
-    if (hasCoresFolder != null)
-    {
-        return drive + "/Cores";
-    }
-    return drive;
-}

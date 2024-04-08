@@ -17,7 +17,42 @@ public class IoHandler(string rootPath)
         WriteIndented = true
     };
 
+    public static string FindRootFolder()
+    {
+        // Look current folder to see if it to use that one
+        var currentDir = Directory.GetCurrentDirectory();
+        var folders = Directory.EnumerateDirectories(currentDir);
+        var hasCoresFolder = folders.SingleOrDefault(f => f == currentDir + "/Cores");
+        if (hasCoresFolder != null)
+        {
+            return currentDir;
+        }
 
+
+        // Search all mounted drives
+        var drives = DriveInfo.GetDrives();
+        foreach (var driveInfo in drives)
+        {
+            // Warning only selects the first one
+            folders = Directory.EnumerateDirectories(driveInfo.Name);
+            hasCoresFolder = folders.SingleOrDefault(f => f == driveInfo.Name + "Cores");
+            if (hasCoresFolder != null)
+            {
+                return driveInfo.Name + "Cores";
+            }
+        }
+
+        // Else ask for drive path
+        AnsiConsole.WriteLine("Could not find AnaloguePocket Cores folder");
+        var drive = AnsiConsole.Ask<string>("Type the path where your AnaloguePocket SD card is?");
+        folders = Directory.EnumerateDirectories(drive);
+        hasCoresFolder = folders.SingleOrDefault(f => f == "Cores");
+        if (hasCoresFolder != null)
+        {
+            return drive + "/Cores";
+        }
+        return drive;
+    }
 
     public void ListCores()
     {
@@ -26,12 +61,12 @@ public class IoHandler(string rootPath)
         {
             if (_cores.Count != 0)
             {
-                PrintDebug(_cores);
+                Printer.PrintDebug(_cores);
             }
         }
         else
         {
-            Print(_cores);
+            Printer.Print(_cores);
         }
     }
 
@@ -71,24 +106,15 @@ public class IoHandler(string rootPath)
                 if (videoSettings != null)
                     foreach (var mode in videoSettings.video.scaler_modes)
                     {
-                        var scalingPercentage = 100;
-
-                        if (mode.dock_aspect_w != null)
-                        {
-                            var normalAr = (decimal)mode.aspect_w / (decimal)mode.aspect_h;
-                            var dockedAr = (decimal)mode.dock_aspect_w / (decimal)mode.dock_aspect_h;
-                            scalingPercentage = (int)(Math.Round(((dockedAr + normalAr) / 2) / (dockedAr - normalAr), MidpointRounding.AwayFromZero) + 100);
-                        }
-
+                        var ratioHandler = new RatioHandler();
                         var core = new CoreDescription
                         {
                             CoreName = Path.GetDirectoryName(file).Split("\\").Last(),
                             Flipped = mode.rotation == 90 || mode.rotation == 270,
                             CurrentAspectRatio = mode.aspect_w + ":" + mode.aspect_h,
                             DockedAspectRatio = mode.dock_aspect_w + ":" + mode.dock_aspect_h,
-                            DockedPercentageAspectRatio = scalingPercentage
-                        };
-
+                            DockedPercentageAspectRatio = ratioHandler.GetScaledPercentage(mode)
+                    };
                         _cores.Add(core);
                     }
             }
@@ -108,54 +134,12 @@ public class IoHandler(string rootPath)
         }
     }
 
-    private static void PrintDebug(List<CoreDescription> cores)
-    {
-        // Create a table
-        var table = new Table();
-
-        // Add some columns
-        table.AddColumn("Name");
-        table.AddColumn("Flipped");
-        table.AddColumn("AspectRatio");
-        table.AddColumn("Docked AR");
-
-        // Add some rows
-        foreach (var core in cores)
-        {
-            table.AddRow(core.CoreName, core.Flipped ? "Yes" : string.Empty, core.CurrentAspectRatio, core.DockedAspectRatio ?? string.Empty);
-        }
-
-        // Render the table to the console
-        AnsiConsole.Write(table);
-    }
-
-
-    private static void Print(List<CoreDescription> cores)
-    {
-        // Create a table
-        var table = new Table();
-
-        // Add some columns
-        table.AddColumn("Name");
-        table.AddColumn("Docked AR");
-
-        var grouped = cores.GroupBy(core => core.CoreName).Select(g => g.MinBy(x => x.CoreName));
-        foreach (var core in grouped)
-        {
-            //var percentage = ( - b) / (a + b) / 2 | × 100 %
-            table.AddRow(core.CoreName, core.DockedPercentageAspectRatio +"%" );
-        }
-
-        // Render the table to the console
-        AnsiConsole.Write(table);
-    }
-
     private void WriteToFile(string folderPath, int increasePercentage, bool reset)
     {
-        if (increasePercentage <= 0)
+        if (increasePercentage <= 0 && !reset)
             throw new ArgumentOutOfRangeException("increasePercentage", "Percentage can't be 0 or lower");
 
-        var increaseRate = 1 + (double)increasePercentage / 10;
+        var increaseRate = 1 + ((double)increasePercentage / 100);
         try
         {
             foreach (var file in Directory.GetFiles(folderPath, "video.json"))

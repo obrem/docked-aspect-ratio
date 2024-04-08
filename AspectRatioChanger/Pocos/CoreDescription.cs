@@ -1,6 +1,6 @@
 ﻿namespace AspectRatioChanger.Pocos;
 
-internal class CoreDescription
+public class CoreDescription
 {
     public string CoreName { get; set; }
 
