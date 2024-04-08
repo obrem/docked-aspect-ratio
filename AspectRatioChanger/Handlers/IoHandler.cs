@@ -22,7 +22,10 @@ public class IoHandler(string drive)
     public void ListCores()
     {
         FindVideoJsonFiles(_rootPath);
-        Print(_cores);
+        if (_cores.Count != 0)
+        {
+            Print(_cores);
+        }
     }
 
     public void AddDockedModes()
@@ -82,9 +85,9 @@ public class IoHandler(string drive)
         {
             AnsiConsole.WriteLine(e.Message);
         }
-        catch (DirectoryNotFoundException e)
+        catch (DirectoryNotFoundException)
         {
-            AnsiConsole.WriteLine(e.Message);
+            AnsiConsole.WriteLine("No cores found under given directory");
         }
     }
 
@@ -112,7 +115,7 @@ public class IoHandler(string drive)
     private void WriteToFile(string folderPath, int increasePercentage, bool reset)
     {
         if (increasePercentage <= 0)
-            throw new ArgumentOutOfRangeException();
+            throw new ArgumentOutOfRangeException("increasePercentage can't be 0 or lower");
 
         var increaseRate = 1 + (double)increasePercentage / 10;
         try

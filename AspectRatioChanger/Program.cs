@@ -1,18 +1,12 @@
-﻿using AspectRatioChanger;
+﻿using AspectRatioChanger.Handlers;
 using Spectre.Console;
 
-var title = @"    ___           _            _     _      __   __ _            _       _     
-   /   \___   ___| | _____  __| |   /_\    /__\ / _\ |_ _ __ ___| |_ ___| |__  
-  / /\ / _ \ / __| |/ / _ \/ _` |  //_\\  / \// \ \| __| '__/ _ \ __/ __| '_ \ 
- / /_// (_) | (__|   <  __/ (_| | /  _  \/ _  \ _\ \ |_| | |  __/ || (__| | | |
-/___,' \___/ \___|_|\_\___|\__,_| \_/ \_/\/ \_/ \__/\__|_|  \___|\__\___|_| |_|     
-
-";
-
-AnsiConsole.MarkupLine("[teal]" + title + "[/]");
+AnsiConsole.Write(
+    new FigletText("Docked AR Stretch")
+        .LeftJustified()
+        .Color(Color.Teal));
 
 var driveLocation = FindDrive();
-
 
 var arc = new IoHandler(driveLocation);
 var run = true;
