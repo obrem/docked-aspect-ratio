@@ -115,7 +115,7 @@ public class IoHandler(string drive)
     private void WriteToFile(string folderPath, int increasePercentage, bool reset)
     {
         if (increasePercentage <= 0)
-            throw new ArgumentOutOfRangeException("increasePercentage can't be 0 or lower");
+            throw new ArgumentOutOfRangeException("increasePercentage", "Percentage can't be 0 or lower");
 
         var increaseRate = 1 + (double)increasePercentage / 10;
         try

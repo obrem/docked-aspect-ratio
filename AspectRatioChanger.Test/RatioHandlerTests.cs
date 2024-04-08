@@ -5,12 +5,7 @@ namespace AspectRatioChanger.Test;
 
 public class RatioHandlerTests
 {
-    private readonly RatioHandler _sut;
-
-    public RatioHandlerTests()
-    {
-        _sut = new RatioHandler();
-    }
+    private readonly RatioHandler _sut = new();
 
     [Theory]
     [InlineData(16, 9)]
