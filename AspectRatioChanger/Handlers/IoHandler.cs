@@ -7,6 +7,7 @@ namespace AspectRatioChanger.Handlers;
 public class IoHandler(string rootPath)
 {
     private readonly List<CoreDescription> _cores = new();
+    private const bool ListDebugMode = false;
 
     private readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
@@ -21,7 +22,14 @@ public class IoHandler(string rootPath)
     public void ListCores()
     {
         FindVideoJsonFiles(rootPath);
-        if (_cores.Count != 0)
+        if (ListDebugMode)
+        {
+            if (_cores.Count != 0)
+            {
+                PrintDebug(_cores);
+            }
+        }
+        else
         {
             Print(_cores);
         }
@@ -63,12 +71,22 @@ public class IoHandler(string rootPath)
                 if (videoSettings != null)
                     foreach (var mode in videoSettings.video.scaler_modes)
                     {
+                        var scalingPercentage = 100;
+
+                        if (mode.dock_aspect_w != null)
+                        {
+                            var normalAr = (decimal)mode.aspect_w / (decimal)mode.aspect_h;
+                            var dockedAr = (decimal)mode.dock_aspect_w / (decimal)mode.dock_aspect_h;
+                            scalingPercentage = (int)(Math.Round(((dockedAr + normalAr) / 2) / (dockedAr - normalAr), MidpointRounding.AwayFromZero) + 100);
+                        }
+
                         var core = new CoreDescription
                         {
                             CoreName = Path.GetDirectoryName(file).Split("\\").Last(),
                             Flipped = mode.rotation == 90 || mode.rotation == 270,
                             CurrentAspectRatio = mode.aspect_w + ":" + mode.aspect_h,
-                            DockedAspectRatio = mode.dock_aspect_w + ":" + mode.dock_aspect_h
+                            DockedAspectRatio = mode.dock_aspect_w + ":" + mode.dock_aspect_h,
+                            DockedPercentageAspectRatio = scalingPercentage
                         };
 
                         _cores.Add(core);
@@ -90,7 +108,7 @@ public class IoHandler(string rootPath)
         }
     }
 
-    private static void Print(List<CoreDescription> cores)
+    private static void PrintDebug(List<CoreDescription> cores)
     {
         // Create a table
         var table = new Table();
@@ -105,6 +123,27 @@ public class IoHandler(string rootPath)
         foreach (var core in cores)
         {
             table.AddRow(core.CoreName, core.Flipped ? "Yes" : string.Empty, core.CurrentAspectRatio, core.DockedAspectRatio ?? string.Empty);
+        }
+
+        // Render the table to the console
+        AnsiConsole.Write(table);
+    }
+
+
+    private static void Print(List<CoreDescription> cores)
+    {
+        // Create a table
+        var table = new Table();
+
+        // Add some columns
+        table.AddColumn("Name");
+        table.AddColumn("Docked AR");
+
+        var grouped = cores.GroupBy(core => core.CoreName).Select(g => g.MinBy(x => x.CoreName));
+        foreach (var core in grouped)
+        {
+            //var percentage = ( - b) / (a + b) / 2 | × 100 %
+            table.AddRow(core.CoreName, core.DockedPercentageAspectRatio +"%" );
         }
 
         // Render the table to the console

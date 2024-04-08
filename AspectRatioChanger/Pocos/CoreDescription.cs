@@ -7,6 +7,7 @@ internal class CoreDescription
     public string CurrentAspectRatio { get; set; }
 
     public string? DockedAspectRatio { get; set; }
+    public int DockedPercentageAspectRatio { get; set; }
 
     public bool Flipped { get; set; }
 }

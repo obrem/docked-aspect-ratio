@@ -1,6 +1,5 @@
 ﻿using AspectRatioChanger.Handlers;
 using Spectre.Console;
-using System.IO;
 
 AnsiConsole.Write(
     new FigletText("Docked AR Stretch")
@@ -8,10 +7,9 @@ AnsiConsole.Write(
         .Color(Color.Teal));
 
 var hasFolderPath = false;
-var driveLocation = "D:/";
+string driveLocation;
 do
 {
-
     driveLocation = FindRootFolder();
     if (AnsiConsole.Confirm($"Is this the path you want to use? '{driveLocation}'"))
     {
@@ -60,22 +58,23 @@ string FindRootFolder()
     // Look current folder to see if it to use that one
     var currentDir = Directory.GetCurrentDirectory();
     var folders = Directory.EnumerateDirectories(currentDir);
-    var hasCoresFolder = folders.SingleOrDefault(f => f == "Cores");
+    var hasCoresFolder = folders.SingleOrDefault(f => f == currentDir + "/Cores");
     if (hasCoresFolder != null)
     {
         return currentDir;
     }
 
 
+    // Search all mounted drives
     var drives = DriveInfo.GetDrives();
     foreach (var driveInfo in drives)
     {
         // Warning only selects the first one
         folders = Directory.EnumerateDirectories(driveInfo.Name);
-        hasCoresFolder = folders.SingleOrDefault(f => f == "Cores");
+        hasCoresFolder = folders.SingleOrDefault(f => f == driveInfo.Name + "Cores");
         if (hasCoresFolder != null)
         {
-            return currentDir;
+            return driveInfo.Name+"Cores";
         }
     }
 
@@ -86,7 +85,7 @@ string FindRootFolder()
     hasCoresFolder = folders.SingleOrDefault(f => f == "Cores");
     if (hasCoresFolder != null)
     {
-        return currentDir;
+        return drive + "/Cores";
     }
     return drive;
 }
