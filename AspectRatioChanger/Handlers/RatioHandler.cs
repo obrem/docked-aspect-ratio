@@ -63,8 +63,8 @@ public class RatioHandler
             
             if (mode.rotation == 90 || mode.rotation == 270)
             {
-                normalAr = (decimal)mode.aspect_h / (decimal)mode.aspect_w;
-                dockedAr = (decimal)mode.dock_aspect_h / (decimal)mode.dock_aspect_w;
+                normalAr = mode.aspect_h / (decimal)mode.aspect_w;
+                dockedAr = mode.dock_aspect_h.Value / (decimal)mode.dock_aspect_w.Value;
             }
 
             var diff = dockedAr - normalAr;
@@ -75,6 +75,30 @@ public class RatioHandler
 
         return scalingPercentage;
     }
+
+    //public int GetScaledPercentageLookup(VideoRoot mode)
+    //{
+    //    var scalingPercentage = 0;
+
+    //    if (mode.dock_aspect_w != null && mode.dock_aspect_h != null)
+    //    {
+    //        var normalAr = mode.aspect_w;
+    //        var dockedAr = mode.dock_aspect_w.Value;
+
+    //        if (mode.rotation == 90 || mode.rotation == 270)
+    //        {
+    //            normalAr = mode.aspect_h;
+    //            dockedAr = mode.dock_aspect_h.Value;
+    //        }
+
+    //        for (var i = 101; i < 160; i++)
+    //        {
+    //            var calulated = normalAr *
+    //        }
+    //    }
+
+    //    return scalingPercentage;
+    //}
 
     private bool CheckCurrentAspectRatio(int aspectW, int aspectH)
     {

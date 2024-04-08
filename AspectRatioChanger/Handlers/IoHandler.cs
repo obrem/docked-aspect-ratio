@@ -7,7 +7,7 @@ namespace AspectRatioChanger.Handlers;
 public class IoHandler(string rootPath)
 {
     private readonly List<CoreDescription> _cores = new();
-    private const bool ListDebugMode = false;
+    private const bool ListDebugMode = true;
 
     private readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {

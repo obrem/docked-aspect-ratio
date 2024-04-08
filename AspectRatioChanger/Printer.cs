@@ -1,6 +1,5 @@
 ﻿using AspectRatioChanger.Pocos;
 using Spectre.Console;
-using System.Drawing;
 using Color = Spectre.Console.Color;
 
 namespace AspectRatioChanger;
@@ -18,8 +17,6 @@ public class Printer
         table.AddColumn("AspectRatio");
         table.AddColumn("Docked AR");
         table.AddColumn("Docked AR %");
-
-       
 
         // Add some rows
         foreach (var core in cores)
