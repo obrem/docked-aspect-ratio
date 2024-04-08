@@ -1,12 +1,25 @@
 ﻿using AspectRatioChanger.Handlers;
 using Spectre.Console;
+using System.IO;
 
 AnsiConsole.Write(
     new FigletText("Docked AR Stretch")
         .LeftJustified()
         .Color(Color.Teal));
 
-var driveLocation = FindDrive();
+var hasFolderPath = false;
+var driveLocation = "D:/";
+do
+{
+
+    driveLocation = FindRootFolder();
+    if (AnsiConsole.Confirm($"Is this the path you want to use? '{driveLocation}'"))
+    {
+        hasFolderPath = true;
+    }
+
+} while (!hasFolderPath);
+
 
 var arc = new IoHandler(driveLocation);
 var run = true;
@@ -42,13 +55,38 @@ do
     }
 } while (run);
 
-string FindDrive()
+string FindRootFolder()
 {
     // Look current folder to see if it to use that one
+    var currentDir = Directory.GetCurrentDirectory();
+    var folders = Directory.EnumerateDirectories(currentDir);
+    var hasCoresFolder = folders.SingleOrDefault(f => f == "Cores");
+    if (hasCoresFolder != null)
+    {
+        return currentDir;
+    }
 
-    // Else search mounted drives for folders
+
+    var drives = DriveInfo.GetDrives();
+    foreach (var driveInfo in drives)
+    {
+        // Warning only selects the first one
+        folders = Directory.EnumerateDirectories(driveInfo.Name);
+        hasCoresFolder = folders.SingleOrDefault(f => f == "Cores");
+        if (hasCoresFolder != null)
+        {
+            return currentDir;
+        }
+    }
 
     // Else ask for drive path
-    var drive = AnsiConsole.Ask<string>("What drive do you want to look in?");
+    AnsiConsole.WriteLine("Could not find AnaloguePocket Cores folder");
+    var drive = AnsiConsole.Ask<string>("Type the path where your AnaloguePocket SD card is?");
+    folders = Directory.EnumerateDirectories(drive);
+    hasCoresFolder = folders.SingleOrDefault(f => f == "Cores");
+    if (hasCoresFolder != null)
+    {
+        return currentDir;
+    }
     return drive;
 }

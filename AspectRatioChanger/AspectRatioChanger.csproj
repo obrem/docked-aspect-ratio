@@ -13,6 +13,7 @@
 		<StackTraceSupport>false</StackTraceSupport>
 		<InvariantGlobalization>true</InvariantGlobalization>
 		<UseSystemResourceKeys>true</UseSystemResourceKeys>
+		<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
 	</PropertyGroup>
 
 	<ItemGroup>

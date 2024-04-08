@@ -4,7 +4,7 @@ using Spectre.Console;
 
 namespace AspectRatioChanger.Handlers;
 
-public class IoHandler(string drive)
+public class IoHandler(string rootPath)
 {
     private readonly List<CoreDescription> _cores = new();
 
@@ -16,12 +16,11 @@ public class IoHandler(string drive)
         WriteIndented = true
     };
 
-    private readonly string _rootPath = drive + @":\Cores";
 
 
     public void ListCores()
     {
-        FindVideoJsonFiles(_rootPath);
+        FindVideoJsonFiles(rootPath);
         if (_cores.Count != 0)
         {
             Print(_cores);
@@ -44,12 +43,12 @@ public class IoHandler(string drive)
                     };
                 }));
 
-        WriteToFile(_rootPath, stretchPercentage, false);
+        WriteToFile(rootPath, stretchPercentage, false);
     }
 
     public void ResetDockedModes()
     {
-        WriteToFile(_rootPath, 0, true);
+        WriteToFile(rootPath, 0, true);
     }
 
     private void FindVideoJsonFiles(string folderPath)
