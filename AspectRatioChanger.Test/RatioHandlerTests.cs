@@ -4,7 +4,7 @@ namespace AspectRatioChanger.Test;
 
 public class RatioHandlerTests
 {
-    private RatioHandler _sut;
+    private readonly RatioHandler _sut;
 
     public RatioHandlerTests()
     {
@@ -19,7 +19,7 @@ public class RatioHandlerTests
     public void Widescreen_aspect_ratio_should_not_stretch(int width, int height)
     {
         // Arrange
-        var testData = new List<VideoRoot>{ new VideoRoot { aspect_w =width, aspect_h = height } };
+        var testData = new List<VideoRoot> { new() { aspect_w = width, aspect_h = height } };
 
         // Act
         var dockedModes = _sut.AddDockedModes(testData, 1.2);
@@ -37,7 +37,7 @@ public class RatioHandlerTests
     public void Widescreen_aspect_ratio_should_be_should_stretch(int width, int height)
     {
         // Arrange
-        var testData = new List<VideoRoot> { new VideoRoot { aspect_w = width, aspect_h = height } };
+        var testData = new List<VideoRoot> { new() { aspect_w = width, aspect_h = height } };
 
         // Act
         var dockedModes = _sut.AddDockedModes(testData, 1.1);
@@ -51,7 +51,7 @@ public class RatioHandlerTests
     public void Widescreen_aspect_ratio_should_never_be_over_stretched()
     {
         // Arrange
-        var testData = new List<VideoRoot> { new VideoRoot { aspect_w = 16, aspect_h = 10 } };
+        var testData = new List<VideoRoot> { new() { aspect_w = 16, aspect_h = 10 } };
 
         // Act
         var dockedModes = _sut.AddDockedModes(testData, 1.5);
@@ -65,10 +65,10 @@ public class RatioHandlerTests
     public void Reset_flag_should_set_null()
     {
         // Arrange
-        var testData = new List<VideoRoot>{ new VideoRoot { dock_aspect_w = 16, dock_aspect_h = 10 } };
+        var testData = new List<VideoRoot> { new() { dock_aspect_w = 16, dock_aspect_h = 10 } };
 
         // Act
-        var dockedModes = _sut.AddDockedModes(testData, 1.1, reset: true);
+        var dockedModes = _sut.AddDockedModes(testData, 1.1, true);
 
         // Assert
         Assert.Null(dockedModes[0].dock_aspect_w);

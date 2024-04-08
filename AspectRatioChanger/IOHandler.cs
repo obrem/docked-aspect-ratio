@@ -1,31 +1,52 @@
-﻿using AspectRatioChanger.Pocos;
+﻿using System.Text.Json;
+using AspectRatioChanger.Pocos;
 using Spectre.Console;
-using System.Text.Json;
 
 namespace AspectRatioChanger;
 
-public class IOHandler
+public class IoHandler(string drive)
 {
-    readonly List<CoreDescription> cores = new();
+    private readonly List<CoreDescription> _cores = new();
 
-    readonly string rootPath;
-    private JsonSerializerOptions _jsonSerializerOptions;
-
-    public IOHandler(string drive)
+    private readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
-        rootPath = drive + @":\Cores";
-        _jsonSerializerOptions = new JsonSerializerOptions
-        {
-            TypeInfoResolver = SourceGenerationContext.Default,
-            ReadCommentHandling = JsonCommentHandling.Skip,
-            AllowTrailingCommas = true,
-            WriteIndented = true
-        };
-    }
+        TypeInfoResolver = SourceGenerationContext.Default,
+        ReadCommentHandling = JsonCommentHandling.Skip,
+        AllowTrailingCommas = true,
+        WriteIndented = true
+    };
+
+    private readonly string _rootPath = drive + @":\Cores";
+
+
     public void ListCores()
     {
-        FindVideoJsonFiles(rootPath);
-        Print(cores);
+        FindVideoJsonFiles(_rootPath);
+        Print(_cores);
+    }
+
+    public void AddDockedModes()
+    {
+        var stretchPercentage = AnsiConsole.Prompt(
+            new TextPrompt<int>("With how many percent do you want to stretch the display?")
+                .PromptStyle("green")
+                .ValidationErrorMessage("[red]That's not a valid percentage[/]")
+                .Validate(age =>
+                {
+                    return age switch
+                    {
+                        <= 0 => ValidationResult.Error("[red]Must be at least 1%[/]"),
+                        >= 60 => ValidationResult.Error("[red]Larger than 60% wont have any effect[/]"),
+                        _ => ValidationResult.Success()
+                    };
+                }));
+
+        WriteToFile(_rootPath, stretchPercentage, false);
+    }
+
+    public void ResetDockedModes()
+    {
+        WriteToFile(_rootPath, 0, true);
     }
 
     private void FindVideoJsonFiles(string folderPath)
@@ -34,8 +55,7 @@ public class IOHandler
         {
             foreach (var file in Directory.GetFiles(folderPath, "video.json"))
             {
-
-                string jsonContent = File.ReadAllText(file);
+                var jsonContent = File.ReadAllText(file);
                 var videoSettings = JsonSerializer.Deserialize(jsonContent, typeof(Root), _jsonSerializerOptions) as Root;
 
                 foreach (var mode in videoSettings.video.scaler_modes)
@@ -48,26 +68,26 @@ public class IOHandler
                         DockedAspectRatio = mode.dock_aspect_w + ":" + mode.dock_aspect_h
                     };
 
-                    cores.Add(core);
+                    _cores.Add(core);
                 }
             }
 
-            foreach (string directory in Directory.GetDirectories(folderPath))
+            foreach (var directory in Directory.GetDirectories(folderPath))
             {
                 FindVideoJsonFiles(directory); // Recursive call to search subdirectories
             }
         }
         catch (UnauthorizedAccessException e)
         {
-            Console.WriteLine(e.Message);
+            AnsiConsole.WriteLine(e.Message);
         }
         catch (DirectoryNotFoundException e)
         {
-            Console.WriteLine(e.Message);
+            AnsiConsole.WriteLine(e.Message);
         }
     }
 
-    private void Print(List<CoreDescription> cores)
+    private static void Print(List<CoreDescription> cores)
     {
         // Create a table
         var table = new Table();
@@ -81,55 +101,46 @@ public class IOHandler
         // Add some rows
         foreach (var core in cores)
         {
-            table.AddRow(core.CoreName, core.Flipped == false ? string.Empty : "Yes", core.CurrentAspectRatio,
-               core.DockedAspectRatio);
+            table.AddRow(core.CoreName, core.Flipped == false ? string.Empty : "Yes", core.CurrentAspectRatio, core.DockedAspectRatio);
         }
+
         // Render the table to the console
         AnsiConsole.Write(table);
     }
 
-    public void AddDockedModes()
+    private void WriteToFile(string folderPath, int increasePercentage, bool reset)
     {
-        WriteToFile(rootPath, false);
-    }
+        if (increasePercentage <= 0)
+            throw new ArgumentOutOfRangeException();
 
-    public void ResetDockedModes()
-    {
-        WriteToFile(rootPath, true);
-    }
-
-    private void WriteToFile(string folderPath, bool reset)
-    {
-
-        var increaseRate = 1.1;
+        var increaseRate = 1 + ((double)increasePercentage / 10);
         try
         {
             foreach (var file in Directory.GetFiles(folderPath, "video.json"))
             {
-
-                string jsonContent = File.ReadAllText(file);
+                var jsonContent = File.ReadAllText(file);
                 var videoSettings = JsonSerializer.Deserialize(jsonContent, typeof(Root), _jsonSerializerOptions) as Root;
 
                 var ratioHandler = new RatioHandler();
                 var modifiedScalerModes = ratioHandler.AddDockedModes(videoSettings.video.scaler_modes, increaseRate, reset);
                 videoSettings.video.scaler_modes = modifiedScalerModes;
-                
+
                 var stringJson = JsonSerializer.Serialize(videoSettings, typeof(Root), _jsonSerializerOptions);
                 File.WriteAllText(file, stringJson);
             }
 
-            foreach (string directory in Directory.GetDirectories(folderPath))
+            foreach (var directory in Directory.GetDirectories(folderPath))
             {
-                WriteToFile(directory, reset); // Recursive call to search subdirectories
+                WriteToFile(directory, increasePercentage, reset); // Recursive call to search subdirectories
             }
         }
         catch (UnauthorizedAccessException e)
         {
-            Console.WriteLine(e.Message);
+            AnsiConsole.WriteLine(e.Message);
         }
         catch (DirectoryNotFoundException e)
         {
-            Console.WriteLine(e.Message);
+            AnsiConsole.WriteLine(e.Message);
         }
     }
 }
