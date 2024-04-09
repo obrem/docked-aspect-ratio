@@ -57,6 +57,24 @@ public class Printer
         AnsiConsole.Write(table);
     }
 
+    public static int GetStretchPercentage()
+    {
+        var stretchPercentage = AnsiConsole.Prompt(
+            new TextPrompt<int>("With how many percent do you want to stretch the display?")
+                .PromptStyle("green")
+                .ValidationErrorMessage("[red]That's not a valid percentage[/]")
+                .Validate(age =>
+                {
+                    return age switch
+                    {
+                        <= 0 => ValidationResult.Error("[red]Must be at least 1%[/]"),
+                        >= 60 => ValidationResult.Error("[red]Larger than 60% wont have any effect[/]"),
+                        _ => ValidationResult.Success()
+                    };
+                }));
+        return stretchPercentage;
+    }
+
     private static Spectre.Console.Color GetColor(int percentage)
     {
         var color = Color.Grey;

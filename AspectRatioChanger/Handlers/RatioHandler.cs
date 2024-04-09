@@ -68,7 +68,7 @@ public class RatioHandler
             }
 
             var diff = dockedAr - normalAr;
-            var average = (normalAr + dockedAr) / 2;
+            var average = normalAr;//(normalAr + dockedAr) / 2;
             var increase = diff / average;
             scalingPercentage = (int)(Math.Round(increase * 100, MidpointRounding.AwayFromZero) + 100);
         }

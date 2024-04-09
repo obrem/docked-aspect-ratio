@@ -6,7 +6,7 @@ namespace AspectRatioChanger.Handlers;
 
 public class IoHandler(string rootPath)
 {
-    private readonly List<CoreDescription> _cores = new();
+    private List<CoreDescription> _cores;
     private const bool ListDebugMode = true;
 
     private readonly JsonSerializerOptions _jsonSerializerOptions = new()
@@ -56,6 +56,7 @@ public class IoHandler(string rootPath)
 
     public void ListCores()
     {
+        _cores = new List<CoreDescription>();
         FindVideoJsonFiles(rootPath);
         if (ListDebugMode)
         {
@@ -72,20 +73,7 @@ public class IoHandler(string rootPath)
 
     public void AddDockedModes()
     {
-        var stretchPercentage = AnsiConsole.Prompt(
-            new TextPrompt<int>("With how many percent do you want to stretch the display?")
-                .PromptStyle("green")
-                .ValidationErrorMessage("[red]That's not a valid percentage[/]")
-                .Validate(age =>
-                {
-                    return age switch
-                    {
-                        <= 0 => ValidationResult.Error("[red]Must be at least 1%[/]"),
-                        >= 60 => ValidationResult.Error("[red]Larger than 60% wont have any effect[/]"),
-                        _ => ValidationResult.Success()
-                    };
-                }));
-
+        var stretchPercentage = Printer.GetStretchPercentage();
         WriteToFile(rootPath, stretchPercentage, false);
     }
 
