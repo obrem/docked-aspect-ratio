@@ -8,13 +8,15 @@ AnsiConsole.Write(
 
 var hasFolderPath = false;
 string driveLocation;
+var firstAttempt = true;
 do
 {
-    driveLocation = IoHandler.FindRootFolder();
+    driveLocation = IoHandler.FindRootFolder(firstAttempt);
     if (AnsiConsole.Confirm($"Is this the path you want to use? '{driveLocation}'"))
     {
         hasFolderPath = true;
     }
+    firstAttempt = false;
 
 } while (!hasFolderPath);
 

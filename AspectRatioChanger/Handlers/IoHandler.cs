@@ -17,28 +17,35 @@ public class IoHandler(string rootPath)
         WriteIndented = true
     };
 
-    public static string FindRootFolder()
+    public static string FindRootFolder(bool firstAttempt = true)
     {
-        // Look current folder to see if it to use that one
-        var currentDir = Directory.GetCurrentDirectory();
-        var folders = Directory.EnumerateDirectories(currentDir);
-        var hasCoresFolder = folders.SingleOrDefault(f => f == currentDir + "/Cores");
-        if (hasCoresFolder != null)
-        {
-            return currentDir;
-        }
+        string currentDir;
+        IEnumerable<string> folders;
+        string hasCoresFolder;
 
-
-        // Search all mounted drives
-        var drives = DriveInfo.GetDrives();
-        foreach (var driveInfo in drives)
+        if (firstAttempt)
         {
-            // Warning only selects the first one
-            folders = Directory.EnumerateDirectories(driveInfo.Name);
-            hasCoresFolder = folders.SingleOrDefault(f => f == driveInfo.Name + "Cores");
+            // Look current folder to see if it to use that one
+            currentDir = Directory.GetCurrentDirectory();
+            folders = Directory.EnumerateDirectories(currentDir);
+            hasCoresFolder = folders.SingleOrDefault(f => f == currentDir + "/Cores");
             if (hasCoresFolder != null)
             {
-                return driveInfo.Name + "Cores";
+                return currentDir;
+            }
+
+
+            // Search all mounted drives
+            var drives = DriveInfo.GetDrives();
+            foreach (var driveInfo in drives)
+            {
+                // Warning only selects the first one
+                folders = Directory.EnumerateDirectories(driveInfo.Name);
+                hasCoresFolder = folders.SingleOrDefault(f => f == driveInfo.Name + "Cores");
+                if (hasCoresFolder != null)
+                {
+                    return driveInfo.Name + "Cores";
+                }
             }
         }
 
@@ -102,7 +109,7 @@ public class IoHandler(string rootPath)
                             CurrentAspectRatio = mode.aspect_w + ":" + mode.aspect_h,
                             DockedAspectRatio = mode.dock_aspect_w + ":" + mode.dock_aspect_h,
                             DockedPercentageAspectRatio = ratioHandler.GetScaledPercentage(mode)
-                    };
+                        };
                         _cores.Add(core);
                     }
             }
