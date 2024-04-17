@@ -7,7 +7,6 @@ namespace AspectRatioChanger.Logic;
 public class IoHandler(string rootPath)
 {
     private List<CoreDescription> _cores;
-    private const bool ListDebugMode = true;
 
     private readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
@@ -33,7 +32,6 @@ public class IoHandler(string rootPath)
             {
                 return currentDir;
             }
-
 
             // Search all mounted drives
             var drives = DriveInfo.GetDrives();
@@ -61,11 +59,11 @@ public class IoHandler(string rootPath)
         return drive;
     }
 
-    public void ListCores()
+    public void ListCores(bool listDetails=false)
     {
         _cores = new List<CoreDescription>();
         FindVideoJsonFiles(rootPath);
-        if (ListDebugMode)
+        if (listDetails)
         {
             if (_cores.Count != 0)
             {

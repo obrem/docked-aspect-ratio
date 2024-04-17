@@ -4,8 +4,33 @@ using Color = Spectre.Console.Color;
 
 namespace AspectRatioChanger.Logic
 {
-    public class Printer
+    public static class Printer
     {
+        public static void PrintTitle()
+        {
+            AnsiConsole.Write(
+                new FigletText("Docked AR Stretch")
+                    .LeftJustified()
+                    .Color(Color.Teal));
+        }
+
+        public static string PromptSelections()
+        {
+            return AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("What do you want to do?")
+                    .PageSize(4)
+                    .MoreChoicesText("[grey](Move up and down)[/]")
+                    .AddChoices(new[]
+                    {
+                        Constants.List,
+                        Constants.ListDetails,
+                        Constants.ChangeDocked,
+                        Constants.Reset,
+                        Constants.Quit
+                    }));
+        }
+
         public static void PrintDebug(List<CoreDescription> cores)
         {
             // Create a table

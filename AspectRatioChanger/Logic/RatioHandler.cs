@@ -6,9 +6,9 @@ public class RatioHandler
 {
     private const double MaxAspectRatioWidth = 16.0 / 9.0;
 
-    public List<VideoRoot> AddDockedModes(List<VideoRoot> scalerModes, double increaseRate, bool reset = false)
+    public List<VideoRoot> AddDockedModes(List<VideoRoot> videoRoots, double increaseRate, bool reset = false)
     {
-        foreach (var mode in scalerModes)
+        foreach (var mode in videoRoots)
         {
             if (reset)
             {
@@ -48,7 +48,7 @@ public class RatioHandler
             }
         }
 
-        return scalerModes;
+        return videoRoots;
     }
 
     public int GetScaledPercentage(VideoRoot mode)
