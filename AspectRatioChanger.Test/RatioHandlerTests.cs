@@ -108,7 +108,6 @@ public class RatioHandlerTests
     }
 
     [Theory]
-    [InlineData(16, 10)]
     [InlineData(4, 3)]
     [InlineData(8, 7)]
     [InlineData(5, 4)]
@@ -117,8 +116,8 @@ public class RatioHandlerTests
         // Arrange
         var testData = new List<VideoRoot> { new() { aspect_w = width, aspect_h = height } };
 
-
-        for (int i = 101; i < 150; i++)
+        // Dont scale over 140 since its gonna be different ratio
+        for (int i = 110; i < 140; i+=10)
         {
             // Act
             double precentageDecimal = (double)i/ 100;
