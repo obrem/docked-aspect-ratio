@@ -14,6 +14,8 @@
 		<InvariantGlobalization>true</InvariantGlobalization>
 		<UseSystemResourceKeys>true</UseSystemResourceKeys>
 		<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+		<PublishLzmaCompressed>true</PublishLzmaCompressed>
+		<StripSymbols>true</StripSymbols>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -21,6 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="PublishAotCompressed" Version="1.0.3" />
 		<PackageReference Include="Spectre.Console" Version="0.48.0" />
 		<PackageReference Include="Spectre.Console.Cli" Version="0.48.0" />
 	</ItemGroup>
