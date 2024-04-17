@@ -1,8 +1,4 @@
-﻿using AspectRatioChanger;
-using AspectRatioChanger.Logic;
-using Spectre.Console;
-
-Printer.PrintTitle();
+﻿Printer.PrintTitle();
 
 var hasFolderPath = false;
 string driveLocation;
@@ -14,8 +10,8 @@ do
     {
         hasFolderPath = true;
     }
-    firstAttempt = false;
 
+    firstAttempt = false;
 } while (!hasFolderPath);
 
 
@@ -48,6 +44,3 @@ do
             break;
     }
 } while (run);
-
-
-

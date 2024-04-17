@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace AspectRatioChanger.Pocos;
+﻿namespace AspectRatioChanger.Pocos;
 
 [JsonSourceGenerationOptions(WriteIndented = true)]
 [JsonSerializable(typeof(Root))]

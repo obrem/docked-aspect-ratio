@@ -1,13 +1,7 @@
-﻿using System.Text.Json;
-using AspectRatioChanger.Pocos;
-using Spectre.Console;
-
-namespace AspectRatioChanger.Logic;
+﻿namespace AspectRatioChanger.Logic;
 
 public class IoHandler(string rootPath)
 {
-    private List<CoreDescription> _cores;
-
     private readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
         TypeInfoResolver = SourceGenerationContext.Default,
@@ -15,6 +9,8 @@ public class IoHandler(string rootPath)
         AllowTrailingCommas = true,
         WriteIndented = true
     };
+
+    private List<CoreDescription> _cores;
 
     public static string FindRootFolder(bool firstAttempt = true)
     {
@@ -56,10 +52,11 @@ public class IoHandler(string rootPath)
         {
             return drive + "/Cores";
         }
+
         return drive;
     }
 
-    public void ListCores(bool listDetails=false)
+    public void ListCores(bool listDetails = false)
     {
         _cores = new List<CoreDescription>();
         FindVideoJsonFiles(rootPath);

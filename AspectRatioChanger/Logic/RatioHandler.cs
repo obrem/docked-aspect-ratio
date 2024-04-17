@@ -1,6 +1,4 @@
-﻿using AspectRatioChanger.Pocos;
-
-namespace AspectRatioChanger.Logic;
+﻿namespace AspectRatioChanger.Logic;
 
 public class RatioHandler
 {
@@ -60,7 +58,7 @@ public class RatioHandler
         {
             var normalAr = mode.aspect_w / (decimal)mode.aspect_h;
             var dockedAr = mode.dock_aspect_w.Value / (decimal)mode.dock_aspect_h.Value;
-            
+
             if (mode.rotation == 90 || mode.rotation == 270)
             {
                 normalAr = mode.aspect_h / (decimal)mode.aspect_w;
