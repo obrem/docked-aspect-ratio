@@ -1,4 +1,4 @@
-﻿using AspectRatioChanger.Handlers;
+﻿using AspectRatioChanger.Logic;
 using Spectre.Console;
 
 AnsiConsole.Write(

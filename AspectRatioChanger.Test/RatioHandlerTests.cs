@@ -1,4 +1,4 @@
-using AspectRatioChanger.Handlers;
+using AspectRatioChanger.Logic;
 using AspectRatioChanger.Pocos;
 
 namespace AspectRatioChanger.Test;

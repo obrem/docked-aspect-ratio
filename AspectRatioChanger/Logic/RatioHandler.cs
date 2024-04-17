@@ -1,6 +1,6 @@
 ﻿using AspectRatioChanger.Pocos;
 
-namespace AspectRatioChanger.Handlers;
+namespace AspectRatioChanger.Logic;
 
 public class RatioHandler
 {
@@ -39,7 +39,7 @@ public class RatioHandler
                     mode.dock_aspect_h /= 10;
                 }
 
-                var isOverStretched = MaxAspectRatioWidth < (double)mode.dock_aspect_w / (double)mode.dock_aspect_h;
+                var isOverStretched = MaxAspectRatioWidth < (double)mode.dock_aspect_w! / (double)mode.dock_aspect_h!;
                 if (isOverStretched)
                 {
                     mode.dock_aspect_w = 16;
@@ -68,37 +68,13 @@ public class RatioHandler
             }
 
             var diff = dockedAr - normalAr;
-            var average = normalAr;//(normalAr + dockedAr) / 2;
+            var average = normalAr;
             var increase = diff / average;
             scalingPercentage = (int)(Math.Round(increase * 100, MidpointRounding.AwayFromZero) + 100);
         }
 
         return scalingPercentage;
     }
-
-    //public int GetScaledPercentageLookup(VideoRoot mode)
-    //{
-    //    var scalingPercentage = 0;
-
-    //    if (mode.dock_aspect_w != null && mode.dock_aspect_h != null)
-    //    {
-    //        var normalAr = mode.aspect_w;
-    //        var dockedAr = mode.dock_aspect_w.Value;
-
-    //        if (mode.rotation == 90 || mode.rotation == 270)
-    //        {
-    //            normalAr = mode.aspect_h;
-    //            dockedAr = mode.dock_aspect_h.Value;
-    //        }
-
-    //        for (var i = 101; i < 160; i++)
-    //        {
-    //            var calulated = normalAr *
-    //        }
-    //    }
-
-    //    return scalingPercentage;
-    //}
 
     private bool CheckCurrentAspectRatio(int aspectW, int aspectH)
     {

@@ -2,7 +2,7 @@
 using AspectRatioChanger.Pocos;
 using Spectre.Console;
 
-namespace AspectRatioChanger.Handlers;
+namespace AspectRatioChanger.Logic;
 
 public class IoHandler(string rootPath)
 {
