@@ -9,5 +9,6 @@ Simple tool to change docked mode aspect ratios for Analogue Pocket
 - Builds, multi platform
 - Manual selection of cores
 - ~~Core specific scales~~
-- Simple core list
+- ~~Simple core list~~
 - ~~Calculated scaling not working~~
+- Docs
