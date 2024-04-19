@@ -5,7 +5,7 @@ public static class Printer
     public static void PrintTitle()
     {
         AnsiConsole.Write(
-            new FigletText("Docked AR Stretch")
+            new FigletText("Aspect Ratio Changer")
                 .LeftJustified()
                 .Color(Color.Teal));
     }
@@ -15,7 +15,7 @@ public static class Printer
         return AnsiConsole.Prompt(
             new SelectionPrompt<string>()
                 .Title("What do you want to do?")
-                .PageSize(4)
+                .PageSize(5)
                 .MoreChoicesText("[grey](Move up and down)[/]")
                 .AddChoices(Constants.List, Constants.ListDetails, Constants.ChangeDocked, Constants.Reset, Constants.Quit));
     }
