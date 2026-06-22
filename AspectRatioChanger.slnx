@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/SolutionItems/">
+    <File Path="Readme.md" />
+  </Folder>
+  <Project Path="AspectRatioChanger.Test/AspectRatioChanger.Test.csproj" />
+  <Project Path="AspectRatioChanger/AspectRatioChanger.csproj" />
+</Solution>

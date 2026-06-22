@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.10.34707.107
+# Visual Studio Version 18
+VisualStudioVersion = 18.8.11912.234
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspectRatioChanger", "AspectRatioChanger\AspectRatioChanger.csproj", "{86D1706B-1C60-466D-8292-36679807AD94}"
 EndProject
@@ -9,6 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspectRatioChanger.Test", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{AAC97591-BA4C-4921-83DA-ACEDA219C5A4}"
 	ProjectSection(SolutionItems) = preProject
+		example_video.json = example_video.json
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject

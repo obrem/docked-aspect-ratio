@@ -130,6 +130,23 @@ public class RatioHandlerTests
        
     }
 
+    [Theory]
+    [InlineData(4, 3)]
+    [InlineData(8, 7)]
+    [InlineData(14, 9)]
+    public void Stretched_aspect_ratio_should_round_close_to_requested_percentage(int width, int height)
+    {
+        // Arrange
+        var testData = new List<VideoRoot> { new() { aspect_w = width, aspect_h = height } };
+
+        // Act
+        var dockedModes = _sut.AddDockedModes(testData, 1.12);
+
+        // Assert
+        var scaledPercentage = _sut.GetScaledPercentage(dockedModes[0]);
+        Assert.InRange(scaledPercentage, 111, 113);
+    }
+
 
     [Theory]
     [InlineData(5, 3)]
@@ -150,4 +167,84 @@ public class RatioHandlerTests
         Assert.NotEqual(110, scaledPercentage);
         Assert.True(scaledPercentage < 110);
     }
+
+    [Fact]
+    public void AddDockedModes_VerticalRotation90_SetsDockedHeightUsingIncreaseAndWidthTimesTen()
+    {
+        // Arrange
+        var testData = new List<VideoRoot> { new() { aspect_w = 8, aspect_h = 7, rotation = 90 } };
+
+        // Act
+        var dockedModes = _sut.AddDockedModes(testData, 1.25);
+
+        // Assert
+        Assert.Equal(80, dockedModes[0].dock_aspect_w);
+        Assert.Equal(88, dockedModes[0].dock_aspect_h);
+    }
+
+    [Fact]
+    public void AddDockedModes_VerticalRotation270_SetsDockedHeightUsingIncreaseAndWidthTimesTen()
+    {
+        // Arrange
+        var testData = new List<VideoRoot> { new() { aspect_w = 4, aspect_h = 3, rotation = 270 } };
+
+        // Act
+        var dockedModes = _sut.AddDockedModes(testData, 1.5);
+
+        // Assert
+        Assert.Equal(40, dockedModes[0].dock_aspect_w);
+        Assert.Equal(45, dockedModes[0].dock_aspect_h);
+    }
+
+    [Fact]
+    public void AddDockedModes_WhenScaledValuesEndInZero_TrimsDockedAspectRatio()
+    {
+        // Arrange
+        var testData = new List<VideoRoot> { new() { aspect_w = 4, aspect_h = 3 } };
+
+        // Act
+        var dockedModes = _sut.AddDockedModes(testData, 1.25);
+
+        // Assert
+        Assert.Equal(5, dockedModes[0].dock_aspect_w);
+        Assert.Equal(3, dockedModes[0].dock_aspect_h);
+    }
+
+    [Fact]
+    public void GetScaledPercentage_WhenDockedAspectRatioIsMissing_ReturnsZero()
+    {
+        // Arrange
+        var testData = new VideoRoot
+        {
+            aspect_w = 4,
+            aspect_h = 3
+        };
+
+        // Act
+        var scaledPercentage = _sut.GetScaledPercentage(testData);
+
+        // Assert
+        Assert.Equal(0, scaledPercentage);
+    }
+
+    [Fact]
+    public void GetScaledPercentage_ForVerticalRotation270_UsesHeightOverWidth()
+    {
+        // Arrange
+        var testData = new VideoRoot
+        {
+            aspect_w = 8,
+            aspect_h = 7,
+            dock_aspect_w = 80,
+            dock_aspect_h = 88,
+            rotation = 270
+        };
+
+        // Act
+        var scaledPercentage = _sut.GetScaledPercentage(testData);
+
+        // Assert
+        Assert.Equal(126, scaledPercentage);
+    }
+
 }

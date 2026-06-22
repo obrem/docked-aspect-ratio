@@ -23,7 +23,7 @@ public class IoHandler(string rootPath)
             // Look current folder to see if it to use that one
             currentDir = Directory.GetCurrentDirectory();
             folders = Directory.EnumerateDirectories(currentDir);
-            hasCoresFolder = folders.SingleOrDefault(f => f == currentDir + "/Cores");
+            hasCoresFolder = folders.SingleOrDefault(f => string.Equals(f, Path.Combine(currentDir, "Cores"), StringComparison.OrdinalIgnoreCase));
             if (hasCoresFolder != null)
             {
                 return currentDir;
@@ -33,12 +33,23 @@ public class IoHandler(string rootPath)
             var drives = DriveInfo.GetDrives();
             foreach (var driveInfo in drives)
             {
-                // Warning only selects the first one
-                folders = Directory.EnumerateDirectories(driveInfo.Name);
-                hasCoresFolder = folders.SingleOrDefault(f => f == driveInfo.Name + "Cores");
-                if (hasCoresFolder != null)
+                try
                 {
-                    return driveInfo.Name + "Cores";
+                    // Warning only selects the first one
+                    folders = Directory.EnumerateDirectories(driveInfo.Name);
+                    hasCoresFolder = folders.SingleOrDefault(f => string.Equals(f, Path.Combine(driveInfo.Name, "Cores"), StringComparison.OrdinalIgnoreCase));
+                    if (hasCoresFolder != null)
+                    {
+                        return driveInfo.Name;
+                    }
+                }
+                catch (IOException e)
+                {
+                    AnsiConsole.WriteLine($"Error accessing drive {driveInfo.Name}: {e.Message}");
+                }
+                catch (UnauthorizedAccessException e)
+                {
+                    AnsiConsole.WriteLine($"Access denied when reading drive {driveInfo.Name}: {e.Message}");
                 }
             }
         }
@@ -47,10 +58,10 @@ public class IoHandler(string rootPath)
         AnsiConsole.WriteLine("Could not find AnaloguePocket Cores folder");
         var drive = AnsiConsole.Ask<string>("Type the path where your AnaloguePocket SD card is?");
         folders = Directory.EnumerateDirectories(drive);
-        hasCoresFolder = folders.SingleOrDefault(f => f == "Cores");
+        hasCoresFolder = folders.SingleOrDefault(f => string.Equals(f, Path.Combine(drive, "Cores"), StringComparison.OrdinalIgnoreCase));
         if (hasCoresFolder != null)
         {
-            return drive + "/Cores";
+            return drive;
         }
 
         return drive;

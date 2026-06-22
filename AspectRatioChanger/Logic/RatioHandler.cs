@@ -18,7 +18,7 @@ public class RatioHandler
             var isVerticalMode = mode.rotation == 90 || mode.rotation == 270;
             if (isVerticalMode)
             {
-                mode.dock_aspect_h = (int)(mode.aspect_h * 10 * increaseRate);
+                mode.dock_aspect_h = (int)Math.Round(mode.aspect_h * 10 * increaseRate, MidpointRounding.AwayFromZero);
                 mode.dock_aspect_w = mode.aspect_w * 10;
             }
             else
@@ -28,7 +28,7 @@ public class RatioHandler
                 var isWidescreen = CheckCurrentAspectRatio(mode.aspect_w, mode.aspect_h);
                 if (isWidescreen) continue;
 
-                mode.dock_aspect_w = (int)(mode.aspect_w * 10 * increaseRate);
+                mode.dock_aspect_w = (int)Math.Round(mode.aspect_w * 10 * increaseRate, MidpointRounding.AwayFromZero);
                 mode.dock_aspect_h = mode.aspect_h * 10;
 
                 if (mode.dock_aspect_w % 10 == 0 && mode.dock_aspect_h % 10 == 0)
@@ -53,21 +53,27 @@ public class RatioHandler
     {
         var scalingPercentage = 0;
 
-
         if (mode.dock_aspect_w != null && mode.dock_aspect_h != null)
         {
-            var normalAr = mode.aspect_w / (decimal)mode.aspect_h;
-            var dockedAr = mode.dock_aspect_w.Value / (decimal)mode.dock_aspect_h.Value;
+            decimal normalAr;
+            decimal dockedAr;
 
             if (mode.rotation == 90 || mode.rotation == 270)
             {
-                normalAr = mode.aspect_h / (decimal)mode.aspect_w;
-                dockedAr = mode.dock_aspect_h.Value / (decimal)mode.dock_aspect_w.Value;
+                // For vertical modes, aspect ratio is height/width
+                normalAr = (decimal)mode.aspect_h / mode.aspect_w;
+                dockedAr = (decimal)mode.dock_aspect_h.Value / mode.dock_aspect_w.Value;
+            }
+            else
+            {
+                // For horizontal modes, aspect ratio is width/height
+                normalAr = (decimal)mode.aspect_w / mode.aspect_h;
+                dockedAr = (decimal)mode.dock_aspect_w.Value / mode.dock_aspect_h.Value;
             }
 
-            var diff = dockedAr - normalAr;
-            var increase = diff / normalAr;
-            scalingPercentage = (int)Math.Round((increase * 100 + 100), MidpointRounding.AwayFromZero);
+            // Calculate the scaling percentage
+            var scalingRatio = dockedAr / normalAr;
+            scalingPercentage = (int)Math.Round(scalingRatio * 100, MidpointRounding.AwayFromZero);
         }
 
         return scalingPercentage;
