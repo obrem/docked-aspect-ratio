@@ -1,6 +1,9 @@
 ﻿namespace AspectRatioChanger.Pocos;
 
-[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSourceGenerationOptions(
+    AllowTrailingCommas = true,
+    ReadCommentHandling = JsonCommentHandling.Skip,
+    WriteIndented = true)]
 [JsonSerializable(typeof(Root))]
 internal partial class SourceGenerationContext : JsonSerializerContext
 {
@@ -8,14 +11,14 @@ internal partial class SourceGenerationContext : JsonSerializerContext
 
 public class Root
 {
-    public Video video { get; set; }
+    public Video video { get; set; } = new();
 }
 
 public class Video
 {
-    public string magic { get; set; }
-    public List<VideoRoot> scaler_modes { get; set; }
-    public List<DisplayMode> display_modes { get; set; }
+    public string magic { get; set; } = string.Empty;
+    public List<VideoRoot> scaler_modes { get; set; } = [];
+    public List<DisplayMode> display_modes { get; set; } = [];
 }
 
 public class VideoRoot
@@ -37,5 +40,5 @@ public class VideoRoot
 
 public class DisplayMode
 {
-    public string id { get; set; }
+    public string id { get; set; } = string.Empty;
 }

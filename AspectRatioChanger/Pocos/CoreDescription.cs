@@ -2,9 +2,9 @@
 
 public class CoreDescription
 {
-    public string CoreName { get; set; }
+    public string CoreName { get; set; } = string.Empty;
 
-    public string CurrentAspectRatio { get; set; }
+    public string CurrentAspectRatio { get; set; } = string.Empty;
 
     public string? DockedAspectRatio { get; set; }
     public int DockedPercentageAspectRatio { get; set; }

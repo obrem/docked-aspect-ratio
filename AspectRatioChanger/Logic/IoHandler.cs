@@ -2,21 +2,13 @@
 
 public class IoHandler(string rootPath)
 {
-    private readonly JsonSerializerOptions _jsonSerializerOptions = new()
-    {
-        TypeInfoResolver = SourceGenerationContext.Default,
-        ReadCommentHandling = JsonCommentHandling.Skip,
-        AllowTrailingCommas = true,
-        WriteIndented = true
-    };
-
-    private List<CoreDescription> _cores;
+    private List<CoreDescription> _cores = [];
 
     public static string FindRootFolder(bool firstAttempt = true)
     {
         string currentDir;
         IEnumerable<string> folders;
-        string hasCoresFolder;
+        string? hasCoresFolder;
 
         if (firstAttempt)
         {
@@ -102,7 +94,7 @@ public class IoHandler(string rootPath)
             foreach (var file in Directory.GetFiles(folderPath, "video.json"))
             {
                 var jsonContent = File.ReadAllText(file);
-                var videoSettings = JsonSerializer.Deserialize(jsonContent, typeof(Root), _jsonSerializerOptions) as Root;
+                var videoSettings = JsonSerializer.Deserialize(jsonContent, SourceGenerationContext.Default.Root);
 
                 if (videoSettings != null)
                     foreach (var mode in videoSettings.video.scaler_modes)
@@ -110,7 +102,7 @@ public class IoHandler(string rootPath)
                         var ratioHandler = new RatioHandler();
                         var core = new CoreDescription
                         {
-                            CoreName = Path.GetDirectoryName(file).Split("\\").Last(),
+                            CoreName = Path.GetFileName(Path.GetDirectoryName(file)) ?? string.Empty,
                             Flipped = mode.rotation == 90 || mode.rotation == 270,
                             CurrentAspectRatio = mode.aspect_w + ":" + mode.aspect_h,
                             DockedAspectRatio = mode.dock_aspect_w + ":" + mode.dock_aspect_h,
@@ -146,13 +138,18 @@ public class IoHandler(string rootPath)
             foreach (var file in Directory.GetFiles(folderPath, "video.json"))
             {
                 var jsonContent = File.ReadAllText(file);
-                var videoSettings = JsonSerializer.Deserialize(jsonContent, typeof(Root), _jsonSerializerOptions) as Root;
+                var videoSettings = JsonSerializer.Deserialize(jsonContent, SourceGenerationContext.Default.Root);
+
+                if (videoSettings == null)
+                {
+                    continue;
+                }
 
                 var ratioHandler = new RatioHandler();
                 var modifiedScalerModes = ratioHandler.AddDockedModes(videoSettings.video.scaler_modes, increaseRate, reset);
                 videoSettings.video.scaler_modes = modifiedScalerModes;
 
-                var stringJson = JsonSerializer.Serialize(videoSettings, typeof(Root), _jsonSerializerOptions);
+                var stringJson = JsonSerializer.Serialize(videoSettings, SourceGenerationContext.Default.Root);
                 File.WriteAllText(file, stringJson);
             }
 
