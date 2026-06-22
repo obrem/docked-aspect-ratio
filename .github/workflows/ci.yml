@@ -3,6 +3,8 @@ name: CI
 on:
   push:
   workflow_dispatch:
+  release:
+    types: [published]
 
 permissions:
   contents: write
@@ -22,34 +24,48 @@ jobs:
           dotnet-version: 10.0.x
 
       - name: Restore
-        run: dotnet restore AspectRatioChanger.sln
+        run: dotnet restore AspectRatioChanger.slnx
 
       - name: Build
-        run: dotnet build AspectRatioChanger.sln --configuration Release --no-restore
+        run: dotnet build AspectRatioChanger.slnx --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test AspectRatioChanger.sln --configuration Release --no-build --verbosity normal
+        run: dotnet test AspectRatioChanger.slnx --configuration Release --no-build --verbosity normal
 
   release:
-    name: Publish GitHub release
-    runs-on: windows-latest
+    name: Publish release artifact (${{ matrix.runtime }})
+    runs-on: ${{ matrix.os }}
     needs: build-test
-    if: startsWith(github.ref, 'refs/tags/')
+    if: github.event_name == 'release' && github.event.action == 'published'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            runtime: win-x64
+          - os: ubuntu-latest
+            runtime: linux-x64
 
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.release.tag_name }}
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.0.x
 
+      - name: Install Linux Native AOT dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y clang zlib1g-dev
+
       - name: Restore
         run: dotnet restore AspectRatioChanger.slnx
 
-      - name: Publish win-x64 release
-        run: dotnet publish AspectRatioChanger/AspectRatioChanger.csproj --configuration Release --runtime win-x64 --self-contained true --output artifacts/publish -p:DebugType=None -p:DebugSymbols=false
+      - name: Publish ${{ matrix.runtime }} release
+        run: dotnet publish AspectRatioChanger/AspectRatioChanger.csproj --configuration Release --runtime ${{ matrix.runtime }} --self-contained true --output artifacts/publish -p:DebugType=None -p:DebugSymbols=false
 
       - name: Remove debug symbols
         shell: pwsh
@@ -58,13 +74,14 @@ jobs:
       - name: Package release
         shell: pwsh
         run: |
-          $tag = "${{ github.ref_name }}"
-          $archive = "AspectRatioChanger-$tag-win-x64.zip"
+          $tag = "${{ github.event.release.tag_name }}"
+          $runtime = "${{ matrix.runtime }}"
+          $archive = "AspectRatioChanger-$tag-$runtime.zip"
           Compress-Archive -Path artifacts/publish/* -DestinationPath $archive -Force
           "archive=$archive" >> $env:GITHUB_ENV
 
-      - name: Create GitHub release
+      - name: Upload release artifact
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "${{ github.ref_name }}" $env:archive --title "${{ github.ref_name }}" --notes "Release ${{ github.ref_name }}"
+        run: gh release upload "${{ github.event.release.tag_name }}" $env:archive --clobber
