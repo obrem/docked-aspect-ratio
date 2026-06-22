@@ -1,6 +1,5 @@
 <Solution>
   <Folder Name="/github/">
-    <File Path=".github/workflows/build.yaml" />
     <File Path=".github/workflows/ci.yml" />
   </Folder>
   <Folder Name="/SolutionItems/">
